@@ -12,22 +12,28 @@ def char_count(filepath):
     char_count = {}
     file = open(filepath, 'r')
     text = file.read()
-    text = text.lower()
     for char in text:
-        if char == ' ':
+        lowered = char.lower()
+        if lowered == ' ':
             continue
-        elif char in char_count:
-            char_count[char] = char_count[char] + 1
+        if lowered == '\n':
+            continue
+        elif lowered in char_count:
+            char_count[lowered] = char_count[lowered] + 1
         else:
-            char_count[char] = 0
+            char_count[lowered] = 1
 
     return char_count
 
 def report(filepath):
     x = word_count(filepath)
     y = char_count(filepath)
-    sorted_chars = sorted(y.items(), key=lambda x:x[1])
+    sorted_chars = sorted(y.items(), key=lambda x:x[1], reverse=True)
 
     print(f"--- Begin report of {filepath} ---")
+    print(f"{x} words found in the document\n")
+    for i in sorted_chars:
+        print(f"The '{i[0]}' character was found {i[1]} times")
+    print("--- End report ---")
 
 main()
